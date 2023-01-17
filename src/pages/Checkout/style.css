@@ -1,0 +1,35 @@
+.form-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 0.5rem;
+}
+
+.checkout-btn {
+  background-color: #8710d8;
+  color: #fff;
+  width: 100%;
+  outline: none;
+  border-radius: 0;
+  border: 1px solid #8710d8;
+}
+
+.findemy-accordion-header button {
+  background: #ececec !important;
+  color: #1a1a1a !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.findemy-accordion-header button::after {
+  display: none;
+}
+
+.supported-cards > img {
+  background: white;
+  padding: 2px;
+  margin: 0 2px;
+  border-radius: 2px;
+  border: 1px solid lightblue;
+}

@@ -1,0 +1,42 @@
+.student-view-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow-x: scroll;
+}
+
+/*hide scroll*/
+.student-view-container::-webkit-scrollbar {
+    display: none;
+}
+
+.rating {
+    color: darkgoldenrod;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.original-price {
+    text-decoration: line-through;
+}
+
+.card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.featured-topic-container {
+    background: #f7f9fa;
+    padding: 60px;
+}
+
+.trending-topic-link {
+    color: #5624d0;
+    text-decoration: underline;
+    font-weight: 700;
+    font-size: 1.15rem;
+}

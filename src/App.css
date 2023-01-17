@@ -1,0 +1,31 @@
+h3 {
+  font-weight: 700;
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.best-seller-badge {
+  background-color: #eceb98;
+  color: #3d3c0a;
+  padding: 0.2rem 0.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.02rem;
+  font-size: 0.7rem;
+}
+
+.root {
+  min-height: 100vh;
+}
+
+.strike {
+  text-decoration: line-through;
+}

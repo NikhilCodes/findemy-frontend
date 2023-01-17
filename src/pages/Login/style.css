@@ -1,0 +1,19 @@
+.login-btn {
+    background-color: #8710d8;
+    color: #fff;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 0;
+}
+
+.login-btn:active {
+    background-color: #5a0099;
+
+}
+
+.auth-input-text {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #000;
+    outline: none;
+}

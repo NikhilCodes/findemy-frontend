@@ -1,0 +1,17 @@
+footer {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+}
+
+footer a {
+    color: white;
+    font-weight: normal;
+    font-size: 0.8rem;
+    line-height: 1.6rem;
+}
+
+footer a:hover {
+    color: white;
+    text-decoration: underline;
+}
