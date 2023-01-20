@@ -6,10 +6,13 @@ import "./index.css";
 import 'antd/dist/reset.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
+import { RecoilRoot } from "recoil";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <App />
-    <ToastContainer/>
+    <RecoilRoot>
+      <App />
+      <ToastContainer/>
+    </RecoilRoot>
   </React.StrictMode>
 );

@@ -29,3 +29,11 @@ h6 {
 .strike {
   text-decoration: line-through;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
+.z-100 {
+  z-index: 100;
+}

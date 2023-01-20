@@ -9,10 +9,12 @@ import { useQuery } from "react-query";
 import { MockService } from "../../services/mock.service";
 import { container } from "tsyringe";
 import { isMobile } from "react-device-detect";
+import { useNavigate } from "react-router-dom";
 
 export default function CheckoutPage() {
   const { register, formState: { errors } } = useForm();
   const mockService = container.resolve(MockService);
+  const navigate = useNavigate();
   const { data } = useQuery('cart', () => mockService.getCartItems())
 
   return (
@@ -142,7 +144,7 @@ export default function CheckoutPage() {
               </div>
               <div className={'d-flex flex-column justify-content-between'}>
                 {data?.map((item) => (
-                  <div className={'d-flex align-items-center my-2'} key={item._id}>
+                  <div className={'clickable d-flex align-items-center my-2'} key={item._id} onClick={() => navigate(`/course/${item._id}`)}>
                     <img src={item.thumbnail} height={40}/>
                     &nbsp;
                     <div className={'d-flex justify-content-between'}>

@@ -24,7 +24,7 @@ export function Footer() {
       </div>}
       <div className='container-fluid p-5'>
         <div className={`d-flex ${isMobile ? 'flex-column' : 'flex-row'} justify-content-between align-content-between`}>
-          <Row className={`w-75 ${isMobile && 'text-center'}`}>
+          <Row className={`${isMobile? 'w-100' : 'w-75'} ${isMobile && 'text-center d-flex justify-content-between align-items-center'}`}>
             <Col style={{ textAlign: 'left' }}>
               <Row>
                 <a href="/udemy-business/?locale=en_US&amp;mx_pg=home-page&amp;path=%2F&amp;ref=footer"

@@ -8,11 +8,12 @@ import { GlobalOutlined, HeartOutlined, InfoCircleFilled } from "@ant-design/ico
 import moment from "moment";
 import { CURRENCY } from "../../constants";
 import './style.css';
+import { CourseService } from "../../services/course.service";
 
 export default function CourseById() {
-  const mockService = container.resolve(MockService);
+  const courseService = container.resolve(CourseService);
   const { id } = useParams();
-  const { data } = useQuery(['course', id], () => mockService.getCourseById(id!));
+  const { data } = useQuery(['course', id], () => courseService.getCourseById(id!));
 
   return (
     <div className={'root'}>
@@ -31,8 +32,9 @@ export default function CourseById() {
               </div>
             </div>
             <div className={'small'}>
-              Created by {data?.creators?.map((v, i) => <span><a href={'/'}
-                                                                 style={{ textDecoration: 'underline' }}>{v.name}</a>{data?.creators?.length - 1 !== i && ', '}</span>)}
+              Created by <span>
+                <a href={'/'} style={{ textDecoration: 'underline' }}>
+                  {data?.creator?.name}</a></span>
             </div>
             <div className={'d-flex'}>
               <small className={'d-flex align-items-center me-3'}>
@@ -46,7 +48,7 @@ export default function CourseById() {
               </small>
             </div>
           </div>
-          <div className={'w-50 h-100'}/>
+          <div className={'w-25 h-100'} />
         </Container>
       </div>
       <div className={'pt-5 d-flex'}>
@@ -90,25 +92,28 @@ export default function CourseById() {
                   Instructor
                 </h3>
                 <div>
-                  <h6><a href={'/'} className={'link-primary text-decoration-underline'}>{data?.creators[0]?.name}</a></h6>
-                  <div className={'text-secondary'}>{data?.creators?.[0]?.occupation}</div>
+                  <h6><a href={'/'} className={'link-primary text-decoration-underline'}>{data?.creator?.name}</a>
+                  </h6>
+                  <div className={'text-secondary'}>{data?.creator?.occupation}</div>
                   <div className={'d-flex align-items-center'}>
-                    <img alt={'instructor avatar'} src={data?.creators?.[0]?.avatar} className={'avatar-large w-25 h-25 my-2'} />
+                    <img alt={'instructor avatar'} src={data?.creator?.avatar}
+                         className={'avatar-large w-25 h-25 my-2'}/>
                     <ul>
-                      <li>{data?.creators?.[0]?.rating} Instructor Rating</li>
-                      <li>{data?.creators?.[0]?.reviews?.toLocaleString()} Reviews</li>
-                      <li>{data?.creators?.[0]?.students?.toLocaleString()} Students</li>
-                      <li>{data?.creators?.[0]?.courses} Courses</li>
+                      <li>{data?.creator?.rating} Instructor Rating</li>
+                      <li>{data?.creator?.reviews?.toLocaleString()} Reviews</li>
+                      <li>{data?.creator?.students?.toLocaleString()} Students</li>
+                      <li>{data?.creator?.courses} Courses</li>
                     </ul>
                   </div>
                   <div className={'mb-5'}>
-                    {data?.creators?.[0]?.description}
+                    {data?.creator?.description}
                   </div>
                 </div>
               </div>
             </div>
-            <div className={'w-50'}/>
-            <div className={'border border-2 border-light w-75 h-100 shadow sticky-top'} style={{transform: 'translateY(-230px)', top: 400}}>
+            <div className={'w-25'}/>
+            <div className={'border border-2 border-light w-75 h-100 shadow sticky-top'}
+                 style={{ transform: 'translateY(-230px)', top: 400, zIndex: 10 }}>
               <video className={'w-100 h-100'} controls={true} src={data?.trailerVideo}/>
               <div className={'bg-white p-3 text-dark'}>
                 <h4 className={'mb-4'}>{CURRENCY}{data?.price?.discountPrice?.toLocaleString()}</h4>

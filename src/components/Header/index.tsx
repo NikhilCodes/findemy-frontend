@@ -1,4 +1,5 @@
 import {
+  ArrowRightOutlined,
   GlobalOutlined,
   HeartOutlined,
   SearchOutlined,
@@ -6,13 +7,15 @@ import {
 } from "@ant-design/icons";
 import { APP_NAME } from "../../constants";
 import "./style.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useNavigation } from "react-router-dom";
 import { useAuth } from "../../hooks/auth.hook";
 import React, { FormEvent, useRef } from "react";
-import { OverlayTrigger, Popover, Tooltip } from "react-bootstrap";
+import { Button, OverlayTrigger, Popover, Tooltip } from "react-bootstrap";
+import { isMobile } from "react-device-detect";
 
 export function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated, user } = useAuth();
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -22,15 +25,16 @@ export function Header() {
       navigate(`/courses?q=${searchRef?.current?.value}`);
     }
   }
+  console.log(location)
+  if (location.pathname === '/search') {
+    return <></>;
+  }
 
   return (
-    <nav className='navbar navbar-expand-lg bg-body-tertiary sticky-top'>
+    <nav className='navbar navbar-expand-lg bg-body-tertiary sticky-top z-100'>
       <div className='container-fluid'>
-        <a className='navbar-brand header-app-name' href='/'>
-          {APP_NAME}
-        </a>
         <button
-          className='navbar-toggler'
+          className='navbar-toggler border-0'
           type='button'
           data-bs-toggle='offcanvas'
           data-bs-target='#offcanvasNavbar'
@@ -38,8 +42,15 @@ export function Header() {
         >
           <span className='navbar-toggler-icon'></span>
         </button>
+        <a className='navbar-brand header-app-name' href='/'>
+          {APP_NAME}
+        </a>
+        {isMobile && <Button variant={'light'} className={'d-flex justify-content-center align-items-center'}
+                 onClick={() => navigate('/search')}>
+          <SearchOutlined/>
+        </Button>}
         <div
-          className='offcanvas offcanvas-end'
+          className='offcanvas offcanvas-start'
           tabIndex={-1}
           id='offcanvasNavbar'
           aria-labelledby='offcanvasNavbarLabel'
@@ -59,7 +70,7 @@ export function Header() {
             ></button>
           </div>
           <div className='offcanvas-body'>
-            <ul className='navbar-nav justify-content-start flex-grow-1 pe-3'>
+            {!isMobile ? <ul className='navbar-nav justify-content-start flex-grow-1 pe-3'>
               <li className='nav-item d-flex align-items-center'>
                 <form className='search px-2' role={"search"} onSubmit={(event) => onSearch(event)}>
                   <SearchOutlined className='search-icon'/>
@@ -72,18 +83,70 @@ export function Header() {
                   />
                 </form>
               </li>
-            </ul>
+            </ul> : <div>
+              <strong className={'ps-3'}>Most Popular</strong>
+              <div>
+                <div className='nav-item d-flex justify-content-between p-3'>
+                  Web Development
+                  <ArrowRightOutlined/>
+                </div>
+
+                <div className='nav-item d-flex justify-content-between p-3'>
+                  Mobile Development
+
+                  <ArrowRightOutlined/>
+                </div>
+
+                <div className='nav-item d-flex justify-content-between p-3'>
+                  Game Development
+
+                  <ArrowRightOutlined/>
+                </div>
+
+                <div className='nav-item d-flex justify-content-between p-3'>
+                  Entrepreneurship
+
+                  <ArrowRightOutlined/>
+                </div>
+              </div>
+              <hr/>
+              <strong className={'ps-3 mt-5'}>More from {APP_NAME}</strong>
+              <div>
+                <div className='nav-item d-flex justify-content-between p-3'>
+                  Web Development
+                  <ArrowRightOutlined/>
+                </div>
+
+                <div className='nav-item d-flex justify-content-between p-3'>
+                  Mobile Development
+
+                  <ArrowRightOutlined/>
+                </div>
+
+                <div className='nav-item d-flex justify-content-between p-3'>
+                  Game Development
+
+                  <ArrowRightOutlined/>
+                </div>
+
+                <div className='nav-item d-flex justify-content-between p-3'>
+                  Entrepreneurship
+
+                  <ArrowRightOutlined/>
+                </div>
+              </div>
+            </div>}
             {isAuthenticated && <div className='d-flex align-items-center logged-in-actions pointer'>
               <div onClick={() => navigate('/my-learning')}>My Learning</div>
               <HeartOutlined/>
-              <ShoppingCartOutlined/>
+              <ShoppingCartOutlined onClick={() => navigate('/cart')}/>
 
               <div/>
 
               <Avatar name={user?.name} email={user?.email}/>
             </div>}
             {!isAuthenticated && <div className='d-flex align-items-center space-top-mobile'>
-              <ShoppingCartOutlined/>
+              <ShoppingCartOutlined onClick={() => navigate('/cart')}/>
               <button
                 style={{ marginLeft: 10 }}
                 className='rounded-0 btn btn-outline-dark'

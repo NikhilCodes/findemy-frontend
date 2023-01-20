@@ -7,9 +7,11 @@ import { CURRENCY } from "../../constants";
 import { TagFilled } from "@ant-design/icons";
 import './style.css';
 import { isMobile } from "react-device-detect";
+import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
   const mockService = container.resolve(MockService);
+  const navigate = useNavigate();
   const { data } = useQuery('cart', () => mockService.getCartItems())
   const totalDiscountedPrice = data?.reduce((acc, item) => acc + item.price.discountPrice, 0) ?? 0;
   const totalOriginalPrice = data?.reduce((acc, item) => acc + item.price.originalPrice, 0) ?? 1;
@@ -23,7 +25,9 @@ export default function CartPage() {
         <div>
           <div className={'text-secondary mb-3'}>{data?.length} Courses in cart</div>
           {data?.map((item) => (
-            <div className={`d-flex justify-content-between p-3 border border-opacity-50 border-1 mx-1 ${isMobile ? 'flex-column' : 'flex-row'}`}>
+            <div key={item._id} className={`clickable d-flex justify-content-between p-3 border border-opacity-50 border-1 mx-1 ${isMobile ? 'flex-column' : 'flex-row'}`}
+                 onClick={() => navigate(`/course/${item._id}`)}
+            >
               <div className={'d-flex justify-content-between'}>
                 <img src={item.thumbnail} alt={'thumbnail'} height={isMobile? 100 : '100%'} className={isMobile ? 'w-100 h-100' : ''}/>
               </div>
@@ -60,7 +64,7 @@ export default function CartPage() {
             <div className={'strike text-secondary small'}>{CURRENCY}{totalOriginalPrice?.toLocaleString()}</div>
             <div className={'text-secondary small'}>{(100 - (totalDiscountedPrice * 100 / totalOriginalPrice)).toFixed()}% off</div>
             <br/>
-            <button className={'checkout-btn'}>Checkout</button>
+            <button className={'checkout-btn'} onClick={() => navigate('/checkout')}>Checkout</button>
           </div>
         </div>
       </div>

@@ -6,6 +6,8 @@ import './style.css';
 import { CURRENCY } from "../../constants";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { CourseService } from "../../services/course.service";
 
 export default function HomePage() {
   return (
@@ -23,8 +25,8 @@ export default function HomePage() {
 
 function StudentView() {
   const scrollableBodyRef = useRef<HTMLDivElement>(null);
-  const mockService = container.resolve(MockService);
-
+  const courseService = container.resolve(CourseService);
+  const navigate = useNavigate();
   const [showLeftArrow, setShowLeftArrow] = React.useState(false);
   const [showRightArrow, setShowRightArrow] = React.useState(true);
 
@@ -53,10 +55,12 @@ function StudentView() {
     }, 500)
   }
 
-  const { data, isLoading } = useQuery('student-view', () => mockService.getStudentsView());
+  const { data, isLoading } = useQuery('student-view', () => courseService.getStudentView());
   if (isLoading) {
     return <Spinner/>
   }
+  console.log(data)
+
   return (
     <div className={'d-flex justify-content-start align-items-center position-relative'}>
       {showLeftArrow && <div className={'position-absolute translate-middle'} style={{ left: 0 }}>
@@ -68,7 +72,8 @@ function StudentView() {
         ><LeftOutlined/></Button>
       </div>}
       <div className='student-view-container' ref={scrollableBodyRef}>
-        {data!.map((course) => (<div style={{ minWidth: 245, marginRight: 20 }} key={course._id}>
+        {data!.map((course) => (<div className={'clickable'} style={{ minWidth: 245, marginRight: 20 }} key={course._id}
+                                     onClick={() => navigate(`/course/${course._id}`)}>
           <div>
             <img
               src={course.thumbnail}
@@ -79,8 +84,8 @@ function StudentView() {
               <h6 className='card-title fw-bold mb-0'>{course.title}</h6>
               <div className='small text-secondary py-1'>{course.creator.name}</div>
               <div className={'rating'}>
-                {course.rating.averageValue} <small
-                className={'text-secondary fw-light'}>({course.rating.totalRatings.toLocaleString()})</small>
+                {course.rating?.averageValue ?? 'UNRATED'} <small
+                className={'text-secondary fw-light'}>({course.rating?.totalRatings?.toLocaleString() ?? '0'})</small>
               </div>
               <div className={'d-flex'}>
                 <div className={'fw-bold me-2'}>{CURRENCY}{course.price.discountPrice?.toLocaleString()}</div>
@@ -117,17 +122,17 @@ function FeaturedTopics() {
             <h5 className={'fw-bold'}>Development</h5>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/'}>Python</a>
+              <a className={'trending-topic-link'} href={'/courses?q=Python'}>Python</a>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/'}>Web Development</a>
+              <a className={'trending-topic-link'} href={'/courses?q=Web Development'}>Web Development</a>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/'}>Machine Learning</a>
+              <a className={'trending-topic-link'} href={'/courses?q=Machine Learning'}>Machine Learning</a>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
 
@@ -136,17 +141,17 @@ function FeaturedTopics() {
             <h5 className={'fw-bold'}>Business</h5>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/'}>Financial Analysis</a>
+              <a className={'trending-topic-link'} href={'/courses?q=Financial Analysis'}>Financial Analysis</a>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/'}>SQL</a>
+              <a className={'trending-topic-link'} href={'/courses?q=SQL'}>SQL</a>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/'}>PMP</a>
+              <a className={'trending-topic-link'} href={'/courses?q=PMP'}>PMP</a>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
           </Col>
@@ -154,17 +159,17 @@ function FeaturedTopics() {
             <h5 className={'fw-bold'}>IT and Software</h5>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/'}>AWS Certification</a>
+              <a className={'trending-topic-link'} href={'/courses?q=AWS Certification'}>AWS Certification</a>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/'}>Ethical Hacking</a>
+              <a className={'trending-topic-link'} href={'/courses?q=Ethical Hacking'}>Ethical Hacking</a>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/'}>Cyber Security</a>
+              <a className={'trending-topic-link'} href={'/courses?q=Cyber Security'}>Cyber Security</a>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
           </Col>
@@ -172,17 +177,17 @@ function FeaturedTopics() {
             <h5 className={'fw-bold'}>Design</h5>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/'}>Photoshop</a>
+              <a className={'trending-topic-link'} href={'/courses?q=Photoshop'}>Photoshop</a>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/'}>Graphic Design</a>
+              <a className={'trending-topic-link'} href={'/courses?q=Graphic Design'}>Graphic Design</a>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/'}>Drawing</a>
+              <a className={'trending-topic-link'} href={'/courses?q=Drawing'}>Drawing</a>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
           </Col>

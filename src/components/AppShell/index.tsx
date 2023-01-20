@@ -15,7 +15,7 @@ const CourseById = React.lazy(() => import('../../pages/Courses/ById'))
 const CheckoutPage = React.lazy(() => import('../../pages/Checkout'))
 const CelebratePage = React.lazy(() => import('../../pages/Celebrate'))
 const CartPage = React.lazy(() => import('../../pages/Cart'))
-
+const SearchPage = React.lazy(() => import('../../pages/mobileOnly/SearchPage'))
 //
 
 export function AppShell() {
@@ -31,6 +31,7 @@ export function AppShell() {
         <Route path={'/checkout'} element={<CheckoutPage/>}/>
         <Route path={'/cart'} element={<CartPage/>}/>
         <Route path={'/celebrate'} element={<CelebratePage/>}/>
+        <Route path={'/search'} element={<SearchPage/>}/>
         <Route path={'/*'}
                element={<div className={'vh-100 d-flex justify-content-center align-items-center'}>404</div>}/>
       </Routes>

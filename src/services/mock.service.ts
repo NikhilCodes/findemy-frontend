@@ -434,7 +434,7 @@ export class MockService {
       thumbnail: 'https://img-c.udemycdn.com/course/240x135/851712_fc61_6.jpg',
       title: 'The Complete JavaScript Course 2023: From Zero to Expert!',
       description: '<p>Learn <strong>JavaScript</strong> like a Professional! Start from the basics and go all the way to creating your own applications and games! Learn JavaScript like a Professional! Start from the basics and go all the way to creating your own applications and games! Learn JavaScript like a Professional! Start from the basics and go all the way to creating your own applications and games! <ul><li>12 mariegold</li><li>Over 13 hours of downloadable content</li></ul>Lorem Ipsum</p>',
-      creators: [{
+      creator: {
         name: 'Jonas Schmedtmann',
         occupation: 'Guitarist',
         rating: 4.7,
@@ -443,10 +443,7 @@ export class MockService {
         courses: 3,
         avatar: 'https://i.picsum.photos/id/92/200/200.jpg?hmac=2cxZLFe94hVFQL5AERTDzRKET_GDG-2qpFi5-ctPekg',
         description: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-      }, {
-        name: 'Douglas Kenny',
-        occupation: 'Guitarist',
-      }],
+      },
       rating: {
         averageValue: 4.5,
         totalRatings: 125130,
