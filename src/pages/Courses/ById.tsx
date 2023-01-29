@@ -2,18 +2,44 @@ import { MockService } from "../../services/mock.service";
 import { container } from "tsyringe";
 import { Container } from "react-bootstrap";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
-import React from "react";
-import { GlobalOutlined, HeartOutlined, InfoCircleFilled } from "@ant-design/icons";
+import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { CheckOutlined, GlobalOutlined, HeartOutlined, InfoCircleFilled } from "@ant-design/icons";
 import moment from "moment";
 import { CURRENCY } from "../../constants";
 import './style.css';
 import { CourseService } from "../../services/course.service";
+import { CartService } from "../../services/cart.service";
 
 export default function CourseById() {
+  const cartService = container.resolve(CartService);
   const courseService = container.resolve(CourseService);
   const { id } = useParams();
   const { data } = useQuery(['course', id], () => courseService.getCourseById(id!));
+  const [addToCartLoader, setAddToCartLoader] = useState(false);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const navigate = useNavigate();
+
+  const onAddToCart = async (disableRemove = false) => {
+    setAddToCartLoader(true);
+    if (isAddedToCart) {
+      if (!disableRemove) {
+        await cartService.removeFromCart(id);
+      }
+    } else {
+      await cartService.addToCart(id);
+    }
+    setAddToCartLoader(false);
+    setIsAddedToCart((initVal) => {
+      return !initVal;
+    })
+  }
+
+  useEffect(() => {
+    if (data?.isAddedToCart) {
+      setIsAddedToCart(true);
+    }
+  }, [data]);
 
   return (
     <div className={'root'}>
@@ -26,15 +52,16 @@ export default function CourseById() {
               {data?.isBestSeller && <span className={'best-seller-badge'}>Bestseller</span>}
               &nbsp;
               <div style={{ color: 'goldenrod' }} className={'fw-bold'}>
-                {data?.rating?.averageValue} <small
+                {data?.rating?.averageRating} <small
                 className={'text-secondary fw-light'}>({data?.rating?.totalRatings?.toLocaleString()}) <strong
-                className={'fw-bold'}>{data?.enrolled?.toLocaleString()} students</strong></small>
+                className={'fw-bold'}>{data?.enrolls?.toLocaleString()} students</strong></small>
               </div>
             </div>
             <div className={'small'}>
               Created by <span>
                 <a href={'/'} style={{ textDecoration: 'underline' }}>
-                  {data?.creator?.name}</a></span>
+                  {data?.creator?.name}</a>
+            </span>
             </div>
             <div className={'d-flex'}>
               <small className={'d-flex align-items-center me-3'}>
@@ -48,7 +75,7 @@ export default function CourseById() {
               </small>
             </div>
           </div>
-          <div className={'w-25 h-100'} />
+          <div className={'w-25 h-100'}/>
         </Container>
       </div>
       <div className={'pt-5 d-flex'}>
@@ -61,10 +88,10 @@ export default function CourseById() {
                 </h3>
                 <div className={'d-flex'}>
                   <ul className={'w-50'}>
-                    {data?.learnings?.slice(0, Math.ceil(data?.learnings?.length / 2))?.map(l => <li>{l}</li>)}
+                    {data?.learnings?.slice(0, Math.ceil(data?.learnings?.length / 2))?.map(l => <li key={l}>{l}</li>)}
                   </ul>
                   <ul className={'w-50'}>
-                    {data?.learnings?.slice(Math.ceil(data?.learnings?.length / 2))?.map(l => <li>{l}</li>)}
+                    {data?.learnings?.slice(Math.ceil(data?.learnings?.length / 2))?.map(l => <li key={l}>{l}</li>)}
                   </ul>
                 </div>
               </div>
@@ -75,7 +102,7 @@ export default function CourseById() {
                 </h3>
                 <div className={'d-flex'}>
                   <ul className={'w-50'}>
-                    {data?.requirements?.map(l => <li>{l}</li>)}
+                    {data?.requirements?.map(l => <li key={l}>{l}</li>)}
                   </ul>
                 </div>
               </div>
@@ -117,8 +144,11 @@ export default function CourseById() {
               <video className={'w-100 h-100'} controls={true} src={data?.trailerVideo}/>
               <div className={'bg-white p-3 text-dark'}>
                 <h4 className={'mb-4'}>{CURRENCY}{data?.price?.discountPrice?.toLocaleString()}</h4>
-                <div className={'d-flex justify-content-between align-items-center mb-1'}>
-                  <button className={'add-to-cart w-100'}>Add to cart</button>
+                {!data.userIsEnrolled && <div className={'d-flex justify-content-between align-items-center mb-1'}>
+                  <button className={'add-to-cart w-100'} onClick={() => onAddToCart()}>{isAddedToCart ?
+                    <span className={'d-flex justify-content-evenly align-items-center'}><CheckOutlined/> Added to cart</span> :
+                    'Add to cart'}
+                  </button>
                   &nbsp;
                   <button
                     className={'justify-content-center align-items-center d-flex add-to-cart bg-white text-dark border border-1 border-dark'}
@@ -126,13 +156,23 @@ export default function CourseById() {
                   >
                     <HeartOutlined/>
                   </button>
-                </div>
+                </div>}
 
-                <button
+                {!data.userIsEnrolled && <button
                   className={'w-100 add-to-cart bg-white text-dark border border-1 border-dark fw-bold'}
+                  onClick={async () => {
+                    await onAddToCart(true);
+                    navigate('/checkout')
+                  }}
                 >
                   Buy Now
-                </button>
+                </button>}
+
+                {data.userIsEnrolled && <button
+                  className={'w-100 add-to-cart bg-white text-dark border border-1 border-dark fw-bold'}
+                >
+                  Already Enrolled
+                </button>}
 
                 <div className={'my-2 text-secondary small text-center'}>30-days money back guarantee</div>
                 <div>

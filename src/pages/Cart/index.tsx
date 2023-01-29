@@ -8,33 +8,39 @@ import { TagFilled } from "@ant-design/icons";
 import './style.css';
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
+import { CartService } from "../../services/cart.service";
 
 export default function CartPage() {
-  const mockService = container.resolve(MockService);
+  const cartService = container.resolve(CartService);
   const navigate = useNavigate();
-  const { data } = useQuery('cart', () => mockService.getCartItems())
+  const { data, refetch } = useQuery('cart', () => cartService.getCart())
   const totalDiscountedPrice = data?.reduce((acc, item) => acc + item.price.discountPrice, 0) ?? 0;
   const totalOriginalPrice = data?.reduce((acc, item) => acc + item.price.originalPrice, 0) ?? 1;
+
+  const onRemoveFromCart = async (id) => {
+    await cartService.removeFromCart(id);
+    refetch();
+  }
   return (
     <Container className={'py-5'}>
       <h2 style={{
         fontFamily: 'Lora, serif'
       }}>Shopping Cart</h2>
       <br/>
-      <div className={`d-flex ${isMobile ? 'flex-column-reverse' : 'flex-row'}`}>
+      {data?.length !== 0 && <div className={`d-flex ${isMobile ? 'flex-column-reverse' : 'flex-row'}`}>
         <div>
           <div className={'text-secondary mb-3'}>{data?.length} Courses in cart</div>
           {data?.map((item) => (
             <div key={item._id} className={`clickable d-flex justify-content-between p-3 border border-opacity-50 border-1 mx-1 ${isMobile ? 'flex-column' : 'flex-row'}`}
                  onClick={() => navigate(`/course/${item._id}`)}
             >
-              <div className={'d-flex justify-content-between'}>
+              <div className={'d-flex justify-content-between me-3'}>
                 <img src={item.thumbnail} alt={'thumbnail'} height={isMobile? 100 : '100%'} className={isMobile ? 'w-100 h-100' : ''}/>
               </div>
               <div className={`mx-1 ${isMobile ? 'w-100' : 'w-50'} d-inline-block`}>
-                <strong>{item.title}</strong>
+                <strong className={`d-block ${isMobile ? 'mt-2' : ''}`} style={{marginTop: 30}}>{item.title}</strong>
                 <div
-                  className={'text-secondary small'}>By {item.creator.name}, {item.enrolled - (item.enrolled % (10 ** (item.enrolled.toString().length - 1)))}+
+                  className={'text-secondary small'}>By {item.creator.name}, {item.enrolls - (item.enrolls % (10 ** (item.enrolls.toString().length - 1)))}+
                 </div>
                 <div style={{ color: 'goldenrod' }} className={'fw-bold'}>
                   {item.isBestSeller &&
@@ -46,11 +52,14 @@ export default function CartPage() {
                 </div>
               </div>
               <div className={'mx-1'}>
-                <div className={'link-primary fw-semibold'}>Remove</div>
+                <div className={'link-primary fw-semibold'} onClick={(e) => {
+                  e.stopPropagation();
+                  onRemoveFromCart(item._id);
+                }}>Remove</div>
               </div>
               <div className={'mx-1'}>
-                <div className={'fw-bold d-flex align-items-center'}
-                     style={{ color: '#8710d8' }}>{CURRENCY}{item?.price?.discountPrice}&nbsp; <TagFilled
+                <div className={'fw-bold d-flex align-items-center color-primary'}
+                     >{CURRENCY}{item?.price?.discountPrice}&nbsp; <TagFilled
                   style={{ transform: 'scaleX(-1)' }}/></div>
                 <div className={'strike'}>{CURRENCY}{item?.price?.originalPrice}</div>
               </div>
@@ -67,7 +76,14 @@ export default function CartPage() {
             <button className={'checkout-btn'} onClick={() => navigate('/checkout')}>Checkout</button>
           </div>
         </div>
-      </div>
+      </div>}
+      {
+        data?.length === 0 && <div className={'text-center'} style={{height: '40vh'}}>
+          <h3 className={'text-secondary'}>Your cart is empty</h3>
+          <br/>
+          <button className={'checkout-btn'} onClick={() => navigate('/')}>Explore Courses</button>
+        </div>
+      }
     </Container>
   )
 }

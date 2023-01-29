@@ -1,5 +1,5 @@
 .login-btn {
-    background-color: #8710d8;
+    background-color: var(--color-primary);
     color: #fff;
     width: 100%;
     outline: none;

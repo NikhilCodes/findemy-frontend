@@ -10,7 +10,7 @@ export class CourseService {
   ) {}
 
   async searchCourses(keyword: string, label: string[]) {
-    return this.httpService.get(`/${this.namespace}/search?keyword=${keyword}&label=${label}`).then((res) => res.data);
+    return this.httpService.get(`/${this.namespace}/search?keyword=${keyword}&levels=${label.join(',')}`).then((res) => res.data);
   }
 
   async getStudentView() {
@@ -21,5 +21,11 @@ export class CourseService {
 
   async getCourseById(id: string) {
     return this.httpService.get(`/${this.namespace}/${id}`).then((res) => res.data);
+  }
+
+  async enrollCourse(ids: string[]) {
+    return this.httpService.post(`/${this.namespace}/enroll`, {
+      courseIds: ids
+    });
   }
 }

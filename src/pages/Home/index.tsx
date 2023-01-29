@@ -73,7 +73,7 @@ function StudentView() {
       </div>}
       <div className='student-view-container' ref={scrollableBodyRef}>
         {data!.map((course) => (<div className={'clickable'} style={{ minWidth: 245, marginRight: 20 }} key={course._id}
-                                     onClick={() => navigate(`/course/${course._id}`)}>
+                                       onClick={() => navigate(`/course/${course._id}`)}>
           <div>
             <img
               src={course.thumbnail}

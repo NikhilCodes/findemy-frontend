@@ -139,7 +139,7 @@ export function Header() {
             {isAuthenticated && <div className='d-flex align-items-center logged-in-actions pointer'>
               <div onClick={() => navigate('/my-learning')}>My Learning</div>
               <HeartOutlined/>
-              <ShoppingCartOutlined onClick={() => navigate('/cart')}/>
+              <ShoppingCartOutlined data-bs-dismiss='offcanvas' onClick={() => navigate('/cart')}/>
 
               <div/>
 

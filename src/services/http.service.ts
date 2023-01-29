@@ -24,4 +24,8 @@ export class HttpService {
   async post(url: string, data: object) {
     return this.instance!.post(url, data);
   }
+
+  async delete(url: string) {
+    return this.instance!.delete(url);
+  }
 }

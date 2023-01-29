@@ -10,12 +10,15 @@ import { MockService } from "../../services/mock.service";
 import { container } from "tsyringe";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
+import { CartService } from "../../services/cart.service";
+import { CourseService } from "../../services/course.service";
 
 export default function CheckoutPage() {
   const { register, formState: { errors } } = useForm();
-  const mockService = container.resolve(MockService);
+  const cartService = container.resolve(CartService);
+  const courseService = container.resolve(CourseService);
   const navigate = useNavigate();
-  const { data } = useQuery('cart', () => mockService.getCartItems())
+  const { data } = useQuery('cart', () => cartService.getCart())
 
   return (
     <div className={'min-vh-100 d-flex'} style={{
@@ -26,7 +29,10 @@ export default function CheckoutPage() {
           <h2 style={{
             fontFamily: 'Lora, serif'
           }}>Checkout</h2>
-          <form id={'checkout-form'}>
+
+          <form id={'checkout-form'} onSubmit={(e) => {
+            e.preventDefault();
+          }}>
             <div className={'fw-bold mb-2'}>Billing Address</div>
 
             <Row>
@@ -147,7 +153,7 @@ export default function CheckoutPage() {
                   <div className={'clickable d-flex align-items-center my-2'} key={item._id} onClick={() => navigate(`/course/${item._id}`)}>
                     <img src={item.thumbnail} height={40}/>
                     &nbsp;
-                    <div className={'d-flex justify-content-between'}>
+                    <div className={'d-flex justify-content-between w-75'}>
                       <div className={'fw-semibold small'}>{item.title}</div>
                     </div>
                     &nbsp;
@@ -190,7 +196,10 @@ export default function CheckoutPage() {
               Policy</a>.
             </small>
             <br/><br/>
-            <button className={'checkout-btn'} form={'checkout-form'}>
+            <button className={'checkout-btn'} form={'checkout-form'} onClick={async () => {
+              await courseService.enrollCourse(data.map((item) => item._id));
+              navigate('/celebrate');
+            }}>
               Complete Checkout
             </button>
           </div>
