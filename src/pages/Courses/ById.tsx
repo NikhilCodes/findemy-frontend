@@ -12,6 +12,7 @@ import { CourseService } from "../../services/course.service";
 import { CartService } from "../../services/cart.service";
 import { Loader } from '../../components/Loader';
 import { isMobile } from 'react-device-detect';
+import { useAuth } from '../../hooks/auth.hook';
 
 export default function CourseById() {
   const cartService = container.resolve(CartService);
@@ -21,6 +22,7 @@ export default function CourseById() {
   const [addToCartLoader, setAddToCartLoader] = useState(false);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const onAddToCart = async (disableRemove = false) => {
     setAddToCartLoader(true);
@@ -92,7 +94,7 @@ export default function CourseById() {
                 <video className={'w-100 h-100'} controls={true} src={data?.trailerVideo}/>
                 <div className={'bg-white p-3 text-dark'}>
                   <h4 className={'mb-4'}>{CURRENCY}{data?.price?.discountPrice?.toLocaleString()}</h4>
-                  {!data.userIsEnrolled && <div className={'d-flex justify-content-between align-items-center mb-1'}>
+                  {!data.userIsEnrolled && isAuthenticated && <div className={'d-flex justify-content-between align-items-center mb-1'}>
                     <button className={'add-to-cart w-100'} onClick={() => onAddToCart()}>{isAddedToCart ?
                       <span className={'d-flex justify-content-evenly align-items-center'}><CheckOutlined/> Added to cart</span> :
                       'Add to cart'}
@@ -106,7 +108,7 @@ export default function CourseById() {
                     </button>
                   </div>}
 
-                  {!data.userIsEnrolled && <button
+                  {!data.userIsEnrolled && isAuthenticated && <button
                     className={'w-100 add-to-cart bg-white text-dark border border-1 border-dark fw-bold'}
                     onClick={async () => {
                       await onAddToCart(true);
@@ -120,6 +122,10 @@ export default function CourseById() {
                     className={'w-100 add-to-cart bg-white text-dark border border-1 border-dark fw-bold'}
                   >
                     Already Enrolled
+                  </button>}
+
+                  {!isAuthenticated && <button className={'add-to-cart w-100'} onClick={() => navigate('/login')}>
+                    Login
                   </button>}
 
                   <div className={'my-2 text-secondary small text-center'}>30-days money back guarantee</div>
@@ -199,7 +205,7 @@ export default function CourseById() {
               <video className={'w-100 h-100'} controls={true} src={data?.trailerVideo}/>
               <div className={'bg-white p-3 text-dark'}>
                 <h4 className={'mb-4'}>{CURRENCY}{data?.price?.discountPrice?.toLocaleString()}</h4>
-                {!data.userIsEnrolled && <div className={'d-flex justify-content-between align-items-center mb-1'}>
+                {!data.userIsEnrolled && isAuthenticated && <div className={'d-flex justify-content-between align-items-center mb-1'}>
                   <button className={'add-to-cart w-100'} onClick={() => onAddToCart()}>{isAddedToCart ?
                     <span className={'d-flex justify-content-evenly align-items-center'}><CheckOutlined/> Added to cart</span> :
                     'Add to cart'}
@@ -213,7 +219,7 @@ export default function CourseById() {
                   </button>
                 </div>}
 
-                {!data.userIsEnrolled && <button
+                {!data.userIsEnrolled && isAuthenticated && <button
                   className={'w-100 add-to-cart bg-white text-dark border border-1 border-dark fw-bold'}
                   onClick={async () => {
                     await onAddToCart(true);
@@ -221,6 +227,10 @@ export default function CourseById() {
                   }}
                 >
                   Buy Now
+                </button>}
+
+                {!isAuthenticated && <button className={'add-to-cart w-100'} onClick={() => navigate('/login')}>
+                  Login to buy
                 </button>}
 
                 {data.userIsEnrolled && <button

@@ -20,7 +20,7 @@ export default function CoursesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [levels, setLevels] = React.useState([]);
   const query = searchParams.get('q');
-  const { data, isLoading, refetch } = useQuery(
+  const { data, isLoading, isRefetching, refetch } = useQuery(
     ['courses', query],
     () => courseService.searchCourses(query, levels)
   );
@@ -101,8 +101,13 @@ export default function CoursesPage() {
         <Col lg={10}>
           <div>
             <div>
+              {isRefetching && <div className={'d-flex justify-content-center'}>
+                <LoadingOutlined style={{ fontSize: 24 }} spin/>
+              </div>}
+            </div>
+            <div>
               {data?.data?.map((course) => (
-                <CourseCard course={course}/>
+                <CourseCard course={course} key={course._id}/>
               ))}
             </div>
             <div className={'pt-lg-5 d-flex justify-content-center w-100'}>
