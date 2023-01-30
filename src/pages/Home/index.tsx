@@ -59,7 +59,6 @@ function StudentView() {
   if (isLoading) {
     return <Spinner/>
   }
-  console.log(data)
 
   return (
     <div className={'d-flex justify-content-start align-items-center position-relative'}>

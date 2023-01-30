@@ -1,9 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { Button } from 'antd';
 import { CheckOutlined, LoadingOutlined } from '@ant-design/icons';
-import { MockService } from "../../services/mock.service";
 import { container } from "tsyringe";
-import { useQuery } from "react-query";
 import React, { useEffect } from "react";
 import './style.css';
 import { CURRENCY } from "../../constants";
@@ -14,33 +12,37 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { CourseService } from "../../services/course.service";
 import { CartService } from "../../services/cart.service";
 import { Loader } from '../../components/Loader';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { fetchAsync, selectCourses, selectCourseTotal } from '../../redux/slices/courses.slice';
 
 export default function CoursesPage() {
+  const mountRef = React.useRef(false);
   const courseService = container.resolve(CourseService);
   const [searchParams, setSearchParams] = useSearchParams();
   const [levels, setLevels] = React.useState([]);
   const query = searchParams.get('q');
-  const { data, isLoading, isRefetching, refetch } = useQuery(
-    ['courses', query],
-    () => courseService.searchCourses(query, levels)
-  );
   const [currentPage, setCurrentPage] = React.useState(0);
   const [coursesPerPage] = React.useState(10);
 
-  useEffect(() => {
-    refetch();
-  }, [levels]);
+  const courses = useAppSelector(selectCourses)
+  const totalCourses = useAppSelector(selectCourseTotal);
+  const isLoading = useAppSelector(state => state.course.status === 'loading')
+  const dispatch = useAppDispatch();
 
-  if (isLoading) {
-    return <Loader/>
-  }
+  useEffect(() => {
+    if (mountRef.current) {
+      dispatch(fetchAsync({ keyword: query, levels }))
+    } else {
+      mountRef.current = true;
+    }
+  }, [levels, query])
 
   return (
-    <Container className={'py-5'} style={{minHeight: '70vh'}}>
-      <h4 className={'fw-bold'}>{data?.total} results for "{query}"</h4>
+    <Container className={'py-5'} style={{ minHeight: '70vh' }}>
+      <h4 className={'fw-bold'}>{totalCourses} results for "{query}"</h4>
       <br/>
       <h6 className={'fw-bold'} style={{ textAlign: 'right' }}>
-        {data?.total?.toLocaleString()} results
+        {totalCourses?.toLocaleString()} results
       </h6>
 
       <Row className={'d-flex'}>
@@ -95,24 +97,25 @@ export default function CoursesPage() {
                 }
                 setLevels([...levels]);
               }}
-            />&nbsp;Advanced</div>
+            />&nbsp;Advanced
+            </div>
           </div>
         </Col>
         <Col lg={10}>
           <div>
             <div>
-              {isRefetching && <div className={'d-flex justify-content-center'}>
+              {isLoading && <div className={'d-flex justify-content-center'}>
                 <LoadingOutlined style={{ fontSize: 24 }} spin/>
               </div>}
             </div>
             <div>
-              {data?.data?.map((course) => (
+              {courses?.map((course) => (
                 <CourseCard course={course} key={course._id}/>
               ))}
             </div>
             <div className={'pt-lg-5 d-flex justify-content-center w-100'}>
               <Pagination
-                total={data?.total}
+                total={totalCourses}
                 size={coursesPerPage}
                 currentPage={currentPage}
                 onChange={(page: number) => setCurrentPage(page)}
@@ -172,7 +175,8 @@ const CourseCard = ({ course }) => {
               {course.isBestSeller && <span className={'best-seller-badge'}>Bestseller</span>}
             </div>
           </div>
-          {!isMobile && course.userIsEnrolled && <Button className={'add-to-cart rounded-0 border-dark border-1 border bg-white text-dark'}>Enrolled</Button>}
+          {!isMobile && course.userIsEnrolled && <Button
+            className={'add-to-cart rounded-0 border-dark border-1 border bg-white text-dark'}>Enrolled</Button>}
           {isAuthenticated && !course.userIsEnrolled && !isMobile && <Button
             loading={addToCartLoader}
             className={'add-to-cart'}

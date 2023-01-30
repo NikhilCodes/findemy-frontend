@@ -25,7 +25,6 @@ export function Header() {
       navigate(`/courses?q=${searchRef?.current?.value}`);
     }
   }
-  console.log(location)
   if (location.pathname === '/search') {
     return <></>;
   }

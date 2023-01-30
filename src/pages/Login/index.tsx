@@ -35,7 +35,6 @@ export default function LoginPage() {
         window.location.reload();
       }
     } catch (e) {
-      console.log(e)
       await toast("Email or Password is incorrect!", { type: 'error' })
     }
   }
