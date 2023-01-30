@@ -13,6 +13,7 @@ import { isMobile } from "react-device-detect";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { CourseService } from "../../services/course.service";
 import { CartService } from "../../services/cart.service";
+import { Loader } from '../../components/Loader';
 
 export default function CoursesPage() {
   const courseService = container.resolve(CourseService);
@@ -31,11 +32,11 @@ export default function CoursesPage() {
   }, [levels]);
 
   if (isLoading) {
-    return <div><LoadingOutlined/></div>
+    return <Loader/>
   }
 
   return (
-    <Container className={'py-5'}>
+    <Container className={'py-5'} style={{minHeight: '70vh'}}>
       <h4 className={'fw-bold'}>{data?.total} results for "{query}"</h4>
       <br/>
       <h6 className={'fw-bold'} style={{ textAlign: 'right' }}>
@@ -166,7 +167,8 @@ const CourseCard = ({ course }) => {
               {course.isBestSeller && <span className={'best-seller-badge'}>Bestseller</span>}
             </div>
           </div>
-          {isAuthenticated && !isMobile && <Button
+          {!isMobile && course.userIsEnrolled && <Button className={'add-to-cart rounded-0 border-dark border-1 border bg-white text-dark'}>Enrolled</Button>}
+          {isAuthenticated && !course.userIsEnrolled && !isMobile && <Button
             loading={addToCartLoader}
             className={'add-to-cart'}
             onClick={(e) => {

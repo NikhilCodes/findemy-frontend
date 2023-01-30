@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/auth.hook";
 import { HttpService } from "../../services/http.service";
+import { isMobile } from 'react-device-detect';
 
 export default function LoginPage() {
   const authService = container.resolve(AuthService);
@@ -40,7 +41,7 @@ export default function LoginPage() {
   }
 
   return (
-    <Container className={'w-25 mt-xl-5'} style={{ minHeight: '80vh' }}>
+    <Container className={`${!isMobile && 'w-25'} mt-xl-5`} style={{ minHeight: '80vh' }}>
       <h6 className={'text-center'}>Log in to your {APP_NAME} account</h6>
       <hr/>
       <form className={'d-flex flex-column'} onSubmit={onSubmit}>
