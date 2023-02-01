@@ -9,28 +9,32 @@ import './style.css';
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { CartService } from "../../services/cart.service";
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { fetchCartAsync, selectCartCourses } from '../../redux/slices/cart.slice';
 
 export default function CartPage() {
   const cartService = container.resolve(CartService);
   const navigate = useNavigate();
-  const { data, refetch } = useQuery('cart', () => cartService.getCart())
-  const totalDiscountedPrice = data?.reduce((acc, item) => acc + item.price.discountPrice, 0) ?? 0;
-  const totalOriginalPrice = data?.reduce((acc, item) => acc + item.price.originalPrice, 0) ?? 1;
+  const cartCourses = useAppSelector(selectCartCourses)
+  const totalDiscountedPrice = cartCourses?.reduce((acc, item) => acc + item.price.discountPrice, 0) ?? 0;
+  const totalOriginalPrice = cartCourses?.reduce((acc, item) => acc + item.price.originalPrice, 0) ?? 1;
+  const dispatch = useAppDispatch();
 
   const onRemoveFromCart = async (id) => {
     await cartService.removeFromCart(id);
-    refetch();
+    dispatch(fetchCartAsync());
   }
+
   return (
     <Container className={'py-5'}>
       <h2 style={{
         fontFamily: 'Lora, serif'
       }}>Shopping Cart</h2>
       <br/>
-      {data?.length !== 0 && <div className={`d-flex ${isMobile ? 'flex-column-reverse' : 'flex-row'}`}>
+      {cartCourses?.length !== 0 && <div className={`d-flex ${isMobile ? 'flex-column-reverse' : 'flex-row'}`}>
         <div>
-          <div className={'text-secondary mb-3'}>{data?.length} Courses in cart</div>
-          {data?.map((item) => (
+          <div className={'text-secondary mb-3'}>{cartCourses?.length} Courses in cart</div>
+          {cartCourses?.map((item) => (
             <div key={item._id} className={`clickable d-flex justify-content-between p-3 border border-opacity-50 border-1 mx-1 ${isMobile ? 'flex-column' : 'flex-row'}`}
                  onClick={() => navigate(`/course/${item._id}`)}
             >
@@ -44,8 +48,8 @@ export default function CartPage() {
                 </div>
                 <div style={{ color: 'goldenrod' }} className={'fw-bold'}>
                   {item.isBestSeller &&
-                    <span className={'best-seller-badge'}>Bestseller</span>} {item?.rating?.averageValue} <small
-                  className={'text-secondary fw-light'}>({item?.rating?.totalRatings?.toLocaleString()} ratings)</small>
+                    <span className={'best-seller-badge'}>Bestseller</span>} {item?.rating?.averageRating} <small
+                  className={'text-secondary fw-light'}>({item?.rating?.totalRating?.toLocaleString()} ratings)</small>
                 </div>
                 <div className={'small text-secondary'}>
                   {item.totalHours} total hours • {item.lectures} lectures • {item.level}
@@ -78,7 +82,7 @@ export default function CartPage() {
         </div>
       </div>}
       {
-        data?.length === 0 && <div className={'text-center'} style={{height: '40vh'}}>
+        cartCourses?.length === 0 && <div className={'text-center'} style={{height: '40vh'}}>
           <h3 className={'text-secondary'}>Your cart is empty</h3>
           <br/>
           <button className={'checkout-btn'} onClick={() => navigate('/')}>Explore Courses</button>

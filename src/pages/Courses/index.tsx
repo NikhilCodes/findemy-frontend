@@ -13,7 +13,8 @@ import { CourseService } from "../../services/course.service";
 import { CartService } from "../../services/cart.service";
 import { Loader } from '../../components/Loader';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { fetchAsync, selectCourses, selectCourseTotal } from '../../redux/slices/courses.slice';
+import { fetchCoursesAsync, selectCourses, selectCourseTotal } from '../../redux/slices/courses.slice';
+import { fetchCartAsync } from '../../redux/slices/cart.slice';
 
 export default function CoursesPage() {
   const mountRef = React.useRef(false);
@@ -31,7 +32,7 @@ export default function CoursesPage() {
 
   useEffect(() => {
     if (mountRef.current) {
-      dispatch(fetchAsync({ keyword: query, levels }))
+      dispatch(fetchCoursesAsync({ keyword: query, levels }))
     } else {
       mountRef.current = true;
     }
@@ -135,6 +136,7 @@ const CourseCard = ({ course }) => {
 
   const [addToCartLoader, setAddToCartLoader] = React.useState(false);
   const [isAddedToCart, setIsAddedToCart] = React.useState(course.isAddedToCart);
+  const dispatch = useAppDispatch();
 
   const onAddToCart = async (courseId: string) => {
     setAddToCartLoader(true);
@@ -147,6 +149,7 @@ const CourseCard = ({ course }) => {
     setIsAddedToCart((initVal) => {
       return !initVal;
     })
+    dispatch(fetchCartAsync());
   }
 
   return (

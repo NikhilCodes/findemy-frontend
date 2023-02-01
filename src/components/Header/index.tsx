@@ -9,15 +9,29 @@ import { APP_NAME } from "../../constants";
 import "./style.css";
 import { useLocation, useNavigate, useNavigation } from "react-router-dom";
 import { useAuth } from "../../hooks/auth.hook";
-import React, { FormEvent, useRef } from "react";
+import React, { FormEvent, useEffect, useRef } from "react";
 import { Button, OverlayTrigger, Popover, Tooltip } from "react-bootstrap";
 import { isMobile } from "react-device-detect";
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { fetchCartAsync } from '../../redux/slices/cart.slice';
+import { Badge } from 'antd';
 
 export function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, user } = useAuth();
   const searchRef = useRef<HTMLInputElement>(null);
+  const mountedRef = useRef(false);
+  const dispatch = useAppDispatch();
+  const cartCoursesLength = useAppSelector(state => state.cart.data.length)
+
+  useEffect(() => {
+    if (mountedRef.current) {
+      dispatch(fetchCartAsync())
+    } else {
+      mountedRef.current = true;
+    }
+  }, [])
 
   const onSearch = (e: FormEvent) => {
     e.preventDefault();
@@ -45,7 +59,7 @@ export function Header() {
           {APP_NAME}
         </a>
         {isMobile && <Button variant={'light'} className={'d-flex justify-content-center align-items-center'}
-                 onClick={() => navigate('/search')}>
+                             onClick={() => navigate('/search')}>
           <SearchOutlined/>
         </Button>}
         <div
@@ -138,14 +152,17 @@ export function Header() {
             {isAuthenticated && <div className='d-flex align-items-center logged-in-actions pointer'>
               <div onClick={() => navigate('/my-learning')}>My Learning</div>
               <HeartOutlined/>
-              <ShoppingCartOutlined data-bs-dismiss='offcanvas' onClick={() => navigate('/cart')}/>
-
+              <Badge count={cartCoursesLength} size={'small'}>
+                <ShoppingCartOutlined data-bs-dismiss='offcanvas' onClick={() => navigate('/cart')}/>
+              </Badge>
               <div/>
 
               <Avatar name={user?.name} email={user?.email}/>
             </div>}
             {!isAuthenticated && <div className='d-flex align-items-center space-top-mobile'>
-              <ShoppingCartOutlined onClick={() => navigate('/cart')}/>
+              <Badge count={cartCoursesLength} size={'small'}>
+                <ShoppingCartOutlined onClick={() => navigate('/cart')}/>
+              </Badge>
               <button
                 style={{ marginLeft: 10 }}
                 className='rounded-0 btn btn-outline-dark'

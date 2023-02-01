@@ -13,6 +13,8 @@ import { CartService } from "../../services/cart.service";
 import { Loader } from '../../components/Loader';
 import { isMobile } from 'react-device-detect';
 import { useAuth } from '../../hooks/auth.hook';
+import { useAppDispatch } from '../../redux/hooks';
+import { fetchCartAsync } from '../../redux/slices/cart.slice';
 
 export default function CourseById() {
   const cartService = container.resolve(CartService);
@@ -23,6 +25,7 @@ export default function CourseById() {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const dispatch = useAppDispatch();
 
   const onAddToCart = async (disableRemove = false) => {
     setAddToCartLoader(true);
@@ -37,6 +40,7 @@ export default function CourseById() {
     setIsAddedToCart((initVal) => {
       return !initVal;
     })
+    dispatch(fetchCartAsync());
   }
 
   useEffect(() => {

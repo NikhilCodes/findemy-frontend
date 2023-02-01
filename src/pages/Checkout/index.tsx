@@ -12,6 +12,8 @@ import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { CartService } from "../../services/cart.service";
 import { CourseService } from "../../services/course.service";
+import { fetchCartAsync } from '../../redux/slices/cart.slice';
+import { useAppDispatch } from '../../redux/hooks';
 
 export default function CheckoutPage() {
   const { register, formState: { errors } } = useForm();
@@ -19,6 +21,7 @@ export default function CheckoutPage() {
   const courseService = container.resolve(CourseService);
   const navigate = useNavigate();
   const { data } = useQuery('cart', () => cartService.getCart())
+  const dispatch = useAppDispatch();
 
   return (
     <div className={'min-vh-100 d-flex'} style={{
@@ -198,6 +201,7 @@ export default function CheckoutPage() {
             <br/><br/>
             <button className={'checkout-btn'} form={'checkout-form'} onClick={async () => {
               await courseService.enrollCourse(data.map((item) => item._id));
+              dispatch(fetchCartAsync());
               navigate('/celebrate');
             }}>
               Complete Checkout
