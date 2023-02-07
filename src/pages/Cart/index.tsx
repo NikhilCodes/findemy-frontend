@@ -48,8 +48,8 @@ export default function CartPage() {
                 </div>
                 <div style={{ color: 'goldenrod' }} className={'fw-bold'}>
                   {item.isBestSeller &&
-                    <span className={'best-seller-badge'}>Bestseller</span>} {item?.rating?.averageRating} <small
-                  className={'text-secondary fw-light'}>({item?.rating?.totalRating?.toLocaleString()} ratings)</small>
+                    <span className={'best-seller-badge'}>Bestseller</span>} {item?.rating?.averageRating?.toFixed(1)} <small
+                  className={'text-secondary fw-light'}>({item?.rating?.totalRatings?.toLocaleString()} ratings)</small>
                 </div>
                 <div className={'small text-secondary'}>
                   {item.totalHours} total hours • {item.lectures} lectures • {item.level}

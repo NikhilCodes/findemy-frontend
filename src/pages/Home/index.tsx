@@ -85,7 +85,7 @@ function StudentView() {
               <div className='small text-secondary py-1'>{course.creator.name}</div>
               <div className={'rating'}>
                 {course.rating?.averageRating?.toFixed(1) ?? 'UNRATED'} <small
-                className={'text-secondary fw-light'}>({course.rating?.totalRating?.toLocaleString() ?? '0'})</small>
+                className={'text-secondary fw-light'}>({course.rating?.totalRatings?.toLocaleString() ?? '0'})</small>
               </div>
               <div className={'d-flex'}>
                 <div className={'fw-bold me-2'}>{CURRENCY}{course.price.discountPrice?.toLocaleString()}</div>

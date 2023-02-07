@@ -6,6 +6,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/auth.hook";
 import { AuthService } from "../../services/auth.service";
 import { container } from "tsyringe";
+import { toast } from 'react-toastify';
 
 export default function SignupPage() {
   const { isAuthenticated } = useAuth();
@@ -31,6 +32,12 @@ export default function SignupPage() {
           passwordRef.current?.value ?? '',
           nameRef.current?.value ?? '',
         )
+        if (!_res.data.success && _res.data.code) {
+          toast("Email already taken!", {
+            type: "error"
+          })
+          return;
+        }
         const { data } = await authService.login(
           emailRef.current?.value ?? '',
           passwordRef.current?.value ?? ''
@@ -39,6 +46,8 @@ export default function SignupPage() {
           navigate('/');
           // reload page
           window.location.reload();
+        } else {
+          console.log(data)
         }
       }}>
         <input ref={nameRef} className={'auth-input-text'} type="text" placeholder="Full name" aria-label={'fullName'}/>

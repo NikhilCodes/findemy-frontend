@@ -14,7 +14,7 @@ export interface Course {
   isBestSeller: boolean;
   rating: {
     averageRating?: number;
-    totalRating?: number;
+    totalRatings?: number;
   };
   enrolls?: number;
   lectures?: number;
