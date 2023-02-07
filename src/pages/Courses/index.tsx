@@ -17,8 +17,6 @@ import { fetchCoursesAsync, selectCourses, selectCourseTotal } from '../../redux
 import { fetchCartAsync } from '../../redux/slices/cart.slice';
 
 export default function CoursesPage() {
-  const mountRef = React.useRef(false);
-  const courseService = container.resolve(CourseService);
   const [searchParams, setSearchParams] = useSearchParams();
   const [levels, setLevels] = React.useState([]);
   const query = searchParams.get('q');
@@ -31,11 +29,7 @@ export default function CoursesPage() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (mountRef.current) {
-      dispatch(fetchCoursesAsync({ keyword: query, levels, size: coursesPerPage, page: currentPage }))
-    } else {
-      mountRef.current = true;
-    }
+    dispatch(fetchCoursesAsync({ keyword: query, levels, size: coursesPerPage, page: currentPage }))
   }, [levels, query, currentPage])
 
   return (
@@ -119,7 +113,7 @@ export default function CoursesPage() {
                 total={totalCourses}
                 size={coursesPerPage}
                 currentPage={currentPage + 1}
-                onChange={(page: number) => setCurrentPage(page-1)}
+                onChange={(page: number) => setCurrentPage(page - 1)}
               />
             </div>
           </div>
