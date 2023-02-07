@@ -19,7 +19,7 @@ export function Rating(props: IRatingProps) {
       <StarFilled key={i} style={{ color: '#FFC107' }}/>
     ))}
     {hasPartialStar && <div style={{width: 13}}>
-      <span style={{width: 8, overflow: 'hidden'}}><StarFilled key={rating} style={{ color: '#FFC107' }}/></span>
+      <div style={{width: 8, overflow: 'hidden'}}><StarFilled key={rating} style={{ color: '#FFC107' }}/></div>
     </div>}
     {[...Array(extra)].map((_, i) => (
       <StarOutlined key={rating + i} />
