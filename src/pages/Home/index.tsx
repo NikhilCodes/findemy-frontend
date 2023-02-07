@@ -8,6 +8,7 @@ import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CourseService } from "../../services/course.service";
+import { Rating } from '../../components/Rating';
 
 export default function HomePage() {
   return (
@@ -83,8 +84,12 @@ function StudentView() {
             <div className='card-body'>
               <h6 className='card-title fw-bold mb-0'>{course.title}</h6>
               <div className='small text-secondary py-1'>{course.creator.name}</div>
-              <div className={'rating'}>
-                {course.rating?.averageRating?.toFixed(1) ?? 'UNRATED'} <small
+              <div className={'rating d-flex align-items-center'}>
+                {course.rating?.averageRating?.toFixed(1) ?? '0'}
+                &nbsp;
+                <Rating rating={course.rating?.averageRating} total={5} />
+                &nbsp;
+                <small
                 className={'text-secondary fw-light'}>({course.rating?.totalRatings?.toLocaleString() ?? '0'})</small>
               </div>
               <div className={'d-flex'}>

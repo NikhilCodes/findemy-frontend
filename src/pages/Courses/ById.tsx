@@ -15,6 +15,7 @@ import { isMobile } from 'react-device-detect';
 import { useAuth } from '../../hooks/auth.hook';
 import { useAppDispatch } from '../../redux/hooks';
 import { fetchCartAsync } from '../../redux/slices/cart.slice';
+import { Rating } from '../../components/Rating';
 
 export default function CourseById() {
   const cartService = container.resolve(CartService);
@@ -63,10 +64,15 @@ export default function CourseById() {
             <div className={'d-flex justify-content-start align-items-start mt-3'}>
               {data?.isBestSeller && <span className={'best-seller-badge'}>Bestseller</span>}
               &nbsp;
-              <div style={{ color: 'goldenrod' }} className={'fw-bold'}>
-                {data?.rating?.averageRating?.toFixed(1)} <small
-                className={'text-secondary fw-light'}>({data?.rating?.totalRatings?.toLocaleString()}) <strong
-                className={'fw-bold'}>{data?.enrolls?.toLocaleString()} students</strong></small>
+              <div style={{ color: 'goldenrod' }} className={'fw-bold d-flex align-items-center'}>
+                {data?.rating?.averageRating?.toFixed(1)}
+                &nbsp;
+                <Rating rating={data?.rating?.averageRating} total={5} />
+                &nbsp;&nbsp;
+                <small
+                  className={'text-secondary fw-light'}>({data?.rating?.totalRatings?.toLocaleString()})&nbsp; <strong
+                  className={'fw-bold'}>{data?.enrolls?.toLocaleString()} students</strong>
+                </small>
               </div>
             </div>
             <div className={'small'}>
@@ -98,19 +104,20 @@ export default function CourseById() {
                 <video className={'w-100 h-100'} controls={true} src={data?.trailerVideo}/>
                 <div className={'bg-white p-3 text-dark'}>
                   <h4 className={'mb-4'}>{CURRENCY}{data?.price?.discountPrice?.toLocaleString()}</h4>
-                  {!data.userIsEnrolled && isAuthenticated && <div className={'d-flex justify-content-between align-items-center mb-1'}>
-                    <button className={'add-to-cart w-100'} onClick={() => onAddToCart()}>{isAddedToCart ?
-                      <span className={'d-flex justify-content-evenly align-items-center'}><CheckOutlined/> Added to cart</span> :
-                      'Add to cart'}
-                    </button>
-                    &nbsp;
-                    <button
-                      className={'justify-content-center align-items-center d-flex add-to-cart bg-white text-dark border border-1 border-dark'}
-                      style={{ width: 45, height: 45 }}
-                    >
-                      <HeartOutlined/>
-                    </button>
-                  </div>}
+                  {!data.userIsEnrolled && isAuthenticated &&
+                    <div className={'d-flex justify-content-between align-items-center mb-1'}>
+                      <button className={'add-to-cart w-100'} onClick={() => onAddToCart()}>{isAddedToCart ?
+                        <span className={'d-flex justify-content-evenly align-items-center'}><CheckOutlined/> Added to cart</span> :
+                        'Add to cart'}
+                      </button>
+                      &nbsp;
+                      <button
+                        className={'justify-content-center align-items-center d-flex add-to-cart bg-white text-dark border border-1 border-dark'}
+                        style={{ width: 45, height: 45 }}
+                      >
+                        <HeartOutlined/>
+                      </button>
+                    </div>}
 
                   {!data.userIsEnrolled && isAuthenticated && <button
                     className={'w-100 add-to-cart bg-white text-dark border border-1 border-dark fw-bold'}
@@ -205,23 +212,24 @@ export default function CourseById() {
             </div>
             {!isMobile && <div className={'w-25'}/>}
             {!isMobile && <div className={'border border-2 border-light w-75 h-100 shadow sticky-top'}
-                  style={{ transform: 'translateY(-230px)', top: 400, zIndex: 10 }}>
+                               style={{ transform: 'translateY(-230px)', top: 400, zIndex: 10 }}>
               <video className={'w-100 h-100'} controls={true} src={data?.trailerVideo}/>
               <div className={'bg-white p-3 text-dark'}>
                 <h4 className={'mb-4'}>{CURRENCY}{data?.price?.discountPrice?.toLocaleString()}</h4>
-                {!data.userIsEnrolled && isAuthenticated && <div className={'d-flex justify-content-between align-items-center mb-1'}>
-                  <button className={'add-to-cart w-100'} onClick={() => onAddToCart()}>{isAddedToCart ?
-                    <span className={'d-flex justify-content-evenly align-items-center'}><CheckOutlined/> Added to cart</span> :
-                    'Add to cart'}
-                  </button>
-                  &nbsp;
-                  <button
-                    className={'justify-content-center align-items-center d-flex add-to-cart bg-white text-dark border border-1 border-dark'}
-                    style={{ width: 45, height: 45 }}
-                  >
-                    <HeartOutlined/>
-                  </button>
-                </div>}
+                {!data.userIsEnrolled && isAuthenticated &&
+                  <div className={'d-flex justify-content-between align-items-center mb-1'}>
+                    <button className={'add-to-cart w-100'} onClick={() => onAddToCart()}>{isAddedToCart ?
+                      <span className={'d-flex justify-content-evenly align-items-center'}><CheckOutlined/> Added to cart</span> :
+                      'Add to cart'}
+                    </button>
+                    &nbsp;
+                    <button
+                      className={'justify-content-center align-items-center d-flex add-to-cart bg-white text-dark border border-1 border-dark'}
+                      style={{ width: 45, height: 45 }}
+                    >
+                      <HeartOutlined/>
+                    </button>
+                  </div>}
 
                 {!data.userIsEnrolled && isAuthenticated && <button
                   className={'w-100 add-to-cart bg-white text-dark border border-1 border-dark fw-bold'}
