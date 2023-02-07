@@ -64,7 +64,7 @@ export default function CourseById() {
               {data?.isBestSeller && <span className={'best-seller-badge'}>Bestseller</span>}
               &nbsp;
               <div style={{ color: 'goldenrod' }} className={'fw-bold'}>
-                {data?.rating?.averageRating} <small
+                {data?.rating?.averageRating?.toFixed(1)} <small
                 className={'text-secondary fw-light'}>({data?.rating?.totalRatings?.toLocaleString()}) <strong
                 className={'fw-bold'}>{data?.enrolls?.toLocaleString()} students</strong></small>
               </div>
