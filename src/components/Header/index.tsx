@@ -45,7 +45,7 @@ export function Header() {
   }
 
   return (
-    <nav className='navbar navbar-expand-lg bg-body-tertiary sticky-top z-100'>
+    <nav className='navbar navbar-expand-lg bg-body-tertiary sticky-top z-1000'>
       <div className='container-fluid'>
         <button
           className='navbar-toggler border-0'

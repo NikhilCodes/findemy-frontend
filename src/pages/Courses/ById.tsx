@@ -20,7 +20,6 @@ import { Rating } from '../../components/Rating';
 export default function CourseById() {
   const cartService = container.resolve(CartService);
   const courseService = container.resolve(CourseService);
-  const courseHeroRef = useRef();
   const { id } = useParams();
   const { data } = useQuery(['course', id], () => courseService.getCourseById(id!));
   const [addToCartLoader, setAddToCartLoader] = useState(false);
@@ -57,7 +56,7 @@ export default function CourseById() {
 
   return (
     <div className={'root'}>
-      <div className={'bg-black p-3 text-white position-sticky'} style={{zIndex: 0, top: 55}} ref={courseHeroRef}>
+      <div className={'bg-black p-3 text-white position-sticky'} style={{ zIndex: 1, top: 55 }}>
         <h6 className={'fw-bold'}>{data?.title}</h6>
         <div className={'d-flex'}>
           {data?.isBestSeller && <span className={'best-seller-badge'}>Bestseller</span>}
@@ -65,7 +64,7 @@ export default function CourseById() {
           <div style={{ color: 'goldenrod' }} className={'fw-bold d-flex align-items-center'}>
             {data?.rating?.averageRating?.toFixed(1)}
             &nbsp;&nbsp;
-            <Rating rating={data?.rating?.averageRating} total={5} />
+            <Rating rating={data?.rating?.averageRating} total={5}/>
             &nbsp;&nbsp;
             <small
               className={'text-secondary fw-light'}>({data?.rating?.totalRatings?.toLocaleString()})&nbsp; <strong
@@ -74,7 +73,7 @@ export default function CourseById() {
           </div>
         </div>
       </div>
-      <div className={'bg-black text-white py-5 z-100'} style={{transform: 'translateY(-70px)'}}>
+      <div className={'bg-black text-white py-5 z-50'} style={{ transform: 'translateY(-90px)', position: 'relative' }}>
         <Container className={'d-flex'}>
           <div className={'w-100'}>
             <h3>{data?.title}</h3>
@@ -85,7 +84,7 @@ export default function CourseById() {
               <div style={{ color: 'goldenrod' }} className={'fw-bold d-flex align-items-center'}>
                 {data?.rating?.averageRating?.toFixed(1)}
                 &nbsp;
-                <Rating rating={data?.rating?.averageRating} total={5} />
+                <Rating rating={data?.rating?.averageRating} total={5}/>
                 &nbsp;&nbsp;
                 <small
                   className={'text-secondary fw-light'}>({data?.rating?.totalRatings?.toLocaleString()})&nbsp; <strong
@@ -117,7 +116,7 @@ export default function CourseById() {
       <div className={'pt-5 d-flex'}>
         <Container>
           <div className={'d-flex'}>
-            <div className={`w-100 ${!isMobile && 'me-5'}`}>
+            <div className={`w-100 ${!isMobile && 'me-5'}`} style={{ transform: 'translateY(-80px)' }}>
               {isMobile && <div>
                 <video className={'w-100 h-100'} controls={true} src={data?.trailerVideo}/>
                 <div className={'bg-white p-3 text-dark'}>
@@ -162,11 +161,13 @@ export default function CourseById() {
                     <strong className={'text-center'}>This course includes:</strong>
                     <div>
                       <small>
-                        <div>5.5 hours on-demand video</div>
-                        <div>70 downloadable resources</div>
-                        <div>Full lifetime access</div>
-                        <div>Access on mobile and TV</div>
-                        <div>Certificate of completion</div>
+                        <ul>
+                          <li>5.5 hours on-demand video</li>
+                          <li>70 downloadable resources</li>
+                          <li>Full lifetime access</li>
+                          <li>Access on mobile and TV</li>
+                          <li>Certificate of completion</li>
+                        </ul>
                       </small>
                     </div>
                   </div>
@@ -230,7 +231,7 @@ export default function CourseById() {
             </div>
             {!isMobile && <div className={'w-25'}/>}
             {!isMobile && <div className={'border border-2 border-light w-75 h-100 shadow sticky-top'}
-                               style={{ transform: 'translateY(-230px)', top: 400, zIndex: 10 }}>
+                               style={{ transform: 'translateY(-230px)', top: 400, zIndex: 100 }}>
               <video className={'w-100 h-100'} controls={true} src={data?.trailerVideo}/>
               <div className={'bg-white p-3 text-dark'}>
                 <h4 className={'mb-4'}>{CURRENCY}{data?.price?.discountPrice?.toLocaleString()}</h4>
@@ -274,11 +275,13 @@ export default function CourseById() {
                   <strong className={'text-center'}>This course includes:</strong>
                   <div>
                     <small>
-                      <div>5.5 hours on-demand video</div>
-                      <div>70 downloadable resources</div>
-                      <div>Full lifetime access</div>
-                      <div>Access on mobile and TV</div>
-                      <div>Certificate of completion</div>
+                      <ul>
+                        <li>5.5 hours on-demand video</li>
+                        <li>70 downloadable resources</li>
+                        <li>Full lifetime access</li>
+                        <li>Access on mobile and TV</li>
+                        <li>Certificate of completion</li>
+                      </ul>
                     </small>
                   </div>
                 </div>
