@@ -3,7 +3,7 @@ import { container } from "tsyringe";
 import { Container } from "react-bootstrap";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CheckOutlined, GlobalOutlined, HeartOutlined, InfoCircleFilled } from "@ant-design/icons";
 import moment from "moment";
 import { CURRENCY } from "../../constants";
@@ -20,6 +20,7 @@ import { Rating } from '../../components/Rating';
 export default function CourseById() {
   const cartService = container.resolve(CartService);
   const courseService = container.resolve(CourseService);
+  const courseHeroRef = useRef();
   const { id } = useParams();
   const { data } = useQuery(['course', id], () => courseService.getCourseById(id!));
   const [addToCartLoader, setAddToCartLoader] = useState(false);
@@ -56,7 +57,24 @@ export default function CourseById() {
 
   return (
     <div className={'root'}>
-      <div className={'bg-black text-white py-5'}>
+      <div className={'bg-black p-3 text-white position-sticky'} style={{zIndex: 0, top: 55}} ref={courseHeroRef}>
+        <h6 className={'fw-bold'}>{data?.title}</h6>
+        <div className={'d-flex'}>
+          {data?.isBestSeller && <span className={'best-seller-badge'}>Bestseller</span>}
+          &nbsp;&nbsp;
+          <div style={{ color: 'goldenrod' }} className={'fw-bold d-flex align-items-center'}>
+            {data?.rating?.averageRating?.toFixed(1)}
+            &nbsp;&nbsp;
+            <Rating rating={data?.rating?.averageRating} total={5} />
+            &nbsp;&nbsp;
+            <small
+              className={'text-secondary fw-light'}>({data?.rating?.totalRatings?.toLocaleString()})&nbsp; <strong
+              className={'fw-bold'}>{data?.enrolls?.toLocaleString()} students</strong>
+            </small>
+          </div>
+        </div>
+      </div>
+      <div className={'bg-black text-white py-5 z-100'} style={{transform: 'translateY(-70px)'}}>
         <Container className={'d-flex'}>
           <div className={'w-100'}>
             <h3>{data?.title}</h3>
