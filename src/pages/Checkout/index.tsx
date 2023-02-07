@@ -45,12 +45,12 @@ export default function CheckoutPage() {
                 </label>
                 <Select id={'countrySelect'} {...register("country", { required: true })} className={'w-100'}>
                   <Select.Option value="india">India</Select.Option>
-                  <Select.Option value="usa">USA</Select.Option>
-                  <Select.Option value="uk">UK</Select.Option>
-                  <Select.Option value="canada">Canada</Select.Option>
-                  <Select.Option value="australia">Australia</Select.Option>
-                  <Select.Option value="germany">Germany</Select.Option>
-                  <Select.Option value="france">France</Select.Option>
+                  {/*<Select.Option value="usa">USA</Select.Option>*/}
+                  {/*<Select.Option value="uk">UK</Select.Option>*/}
+                  {/*<Select.Option value="canada">Canada</Select.Option>*/}
+                  {/*<Select.Option value="australia">Australia</Select.Option>*/}
+                  {/*<Select.Option value="germany">Germany</Select.Option>*/}
+                  {/*<Select.Option value="france">France</Select.Option>*/}
                 </Select>
               </Col>
 
