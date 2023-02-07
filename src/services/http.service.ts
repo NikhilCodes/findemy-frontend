@@ -14,7 +14,6 @@ export class HttpService {
         Authorization: `Bearer ${token}`,
       },
     });
-
   }
 
   async get(url: string) {

@@ -25,8 +25,8 @@ const initialState: CourseState = {
 // typically used to make async requests.
 export const fetchCoursesAsync = createAsyncThunk(
   'course/search',
-  async ({ keyword, levels }: { keyword: string, levels: string[] }, { }) => {
-    return await courseService.searchCourses(keyword, levels);
+  async ({ keyword, levels, size, page }: { keyword: string, levels: string[], size: number, page: number }, { }) => {
+    return await courseService.searchCourses(keyword, levels, size, page);
   }
 );
 

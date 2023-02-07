@@ -23,7 +23,7 @@ export default function CoursesPage() {
   const [levels, setLevels] = React.useState([]);
   const query = searchParams.get('q');
   const [currentPage, setCurrentPage] = React.useState(0);
-  const [coursesPerPage] = React.useState(10);
+  const [coursesPerPage] = React.useState(4);
 
   const courses = useAppSelector(selectCourses)
   const totalCourses = useAppSelector(selectCourseTotal);
@@ -32,11 +32,11 @@ export default function CoursesPage() {
 
   useEffect(() => {
     if (mountRef.current) {
-      dispatch(fetchCoursesAsync({ keyword: query, levels }))
+      dispatch(fetchCoursesAsync({ keyword: query, levels, size: coursesPerPage, page: currentPage }))
     } else {
       mountRef.current = true;
     }
-  }, [levels, query])
+  }, [levels, query, currentPage])
 
   return (
     <Container className={'py-5'} style={{ minHeight: '70vh' }}>
@@ -118,8 +118,8 @@ export default function CoursesPage() {
               <Pagination
                 total={totalCourses}
                 size={coursesPerPage}
-                currentPage={currentPage}
-                onChange={(page: number) => setCurrentPage(page)}
+                currentPage={currentPage + 1}
+                onChange={(page: number) => setCurrentPage(page-1)}
               />
             </div>
           </div>

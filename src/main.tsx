@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <Provider store={store}>
       <ConfigProvider theme={{
         token: {
-          fontFamily: "Findemy Sans"
+          colorPrimary: '#8710d8',
         },
       }}>
         <App/>

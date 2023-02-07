@@ -9,8 +9,8 @@ export class CourseService {
     @inject(HttpService) private httpService: HttpService,
   ) {}
 
-  async searchCourses(keyword: string, levels: string[]) {
-    return this.httpService.get(`/${this.namespace}/search?keyword=${keyword}&levels=${levels.join(',')}`).then((res) => res.data);
+  async searchCourses(keyword: string, levels: string[], size: number, page: number) {
+    return this.httpService.get(`/${this.namespace}/search?keyword=${keyword}&levels=${levels.join(',')}&size=${size}&page=${page}`).then((res) => res.data);
   }
 
   async getStudentView() {

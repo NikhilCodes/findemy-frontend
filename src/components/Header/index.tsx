@@ -7,9 +7,9 @@ import {
 } from "@ant-design/icons";
 import { APP_NAME } from "../../constants";
 import "./style.css";
-import { useLocation, useNavigate, useNavigation } from "react-router-dom";
+import { Link, useLocation, useNavigate, useNavigation } from "react-router-dom";
 import { useAuth } from "../../hooks/auth.hook";
-import React, { FormEvent, useEffect, useRef } from "react";
+import React, { FormEvent, useCallback, useEffect, useRef } from "react";
 import { Button, OverlayTrigger, Popover, Tooltip } from "react-bootstrap";
 import { isMobile } from "react-device-detect";
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -19,7 +19,7 @@ import { Badge } from 'antd';
 export function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
   const searchRef = useRef<HTMLInputElement>(null);
   const mountedRef = useRef(false);
   const dispatch = useAppDispatch();
@@ -33,12 +33,13 @@ export function Header() {
     }
   }, [])
 
-  const onSearch = (e: FormEvent) => {
+  const onSearch = useCallback((e: FormEvent) => {
     e.preventDefault();
     if (searchRef.current?.value) {
       navigate(`/courses?q=${searchRef?.current?.value}`);
     }
-  }
+  }, []);
+
   if (location.pathname === '/search') {
     return <></>;
   }
@@ -55,9 +56,9 @@ export function Header() {
         >
           <span className='navbar-toggler-icon'></span>
         </button>
-        <a className='navbar-brand header-app-name' href='/'>
+        <Link className='navbar-brand header-app-name' to={'/'}>
           {APP_NAME}
-        </a>
+        </Link>
         {isMobile && <Button variant={'light'} className={'d-flex justify-content-center align-items-center'}
                              onClick={() => navigate('/search')}>
           <SearchOutlined/>
@@ -159,7 +160,7 @@ export function Header() {
 
               <Avatar name={user?.name} email={user?.email}/>
             </div>}
-            {!isAuthenticated && <div className='d-flex align-items-center space-top-mobile'>
+            {!isAuthenticated && !isLoading && <div className='d-flex align-items-center space-top-mobile'>
               <Badge count={cartCoursesLength} size={'small'}>
                 <ShoppingCartOutlined onClick={() => navigate('/cart')}/>
               </Badge>

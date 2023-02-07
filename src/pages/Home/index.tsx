@@ -6,7 +6,7 @@ import './style.css';
 import { CURRENCY } from "../../constants";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CourseService } from "../../services/course.service";
 
 export default function HomePage() {
@@ -121,17 +121,17 @@ function FeaturedTopics() {
             <h5 className={'fw-bold'}>Development</h5>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/courses?q=Python'}>Python</a>
+              <Link className={'trending-topic-link'} to={'/courses?q=Python'}>Python</Link>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/courses?q=Web Development'}>Web Development</a>
+              <Link className={'trending-topic-link'} to={'/courses?q=Web Development'}>Web Development</Link>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/courses?q=Machine Learning'}>Machine Learning</a>
+              <Link className={'trending-topic-link'} to={'/courses?q=Machine Learning'}>Machine Learning</Link>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
 
@@ -140,17 +140,17 @@ function FeaturedTopics() {
             <h5 className={'fw-bold'}>Business</h5>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/courses?q=Financial Analysis'}>Financial Analysis</a>
+              <Link className={'trending-topic-link'} to={'/courses?q=Financial Analysis'}>Financial Analysis</Link>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/courses?q=SQL'}>SQL</a>
+              <Link className={'trending-topic-link'} to={'/courses?q=SQL'}>SQL</Link>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/courses?q=PMP'}>PMP</a>
+              <Link className={'trending-topic-link'} to={'/courses?q=PMP'}>PMP</Link>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
           </Col>
@@ -158,17 +158,17 @@ function FeaturedTopics() {
             <h5 className={'fw-bold'}>IT and Software</h5>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/courses?q=AWS Certification'}>AWS Certification</a>
+              <Link className={'trending-topic-link'} to={'/courses?q=AWS Certification'}>AWS Certification</Link>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/courses?q=Ethical Hacking'}>Ethical Hacking</a>
+              <Link className={'trending-topic-link'} to={'/courses?q=Ethical Hacking'}>Ethical Hacking</Link>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/courses?q=Cyber Security'}>Cyber Security</a>
+              <Link className={'trending-topic-link'} to={'/courses?q=Cyber Security'}>Cyber Security</Link>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
           </Col>
@@ -176,17 +176,17 @@ function FeaturedTopics() {
             <h5 className={'fw-bold'}>Design</h5>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/courses?q=Photoshop'}>Photoshop</a>
+              <Link className={'trending-topic-link'} to={'/courses?q=Photoshop'}>Photoshop</Link>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/courses?q=Graphic Design'}>Graphic Design</a>
+              <Link className={'trending-topic-link'} to={'/courses?q=Graphic Design'}>Graphic Design</Link>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
             <br/>
             <Row>
-              <a className={'trending-topic-link'} href={'/courses?q=Drawing'}>Drawing</a>
+              <Link className={'trending-topic-link'} to={'/courses?q=Drawing'}>Drawing</Link>
               <div className={'text-secondary'}>3,622,331 students</div>
             </Row>
           </Col>

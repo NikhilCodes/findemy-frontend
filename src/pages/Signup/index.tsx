@@ -2,7 +2,7 @@ import { APP_NAME } from "../../constants";
 import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import '../Login/style.css';
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/auth.hook";
 import { AuthService } from "../../services/auth.service";
 import { container } from "tsyringe";
@@ -50,7 +50,7 @@ export default function SignupPage() {
         <button className={'login-btn'}>Sign Up</button>
         <br/>
         <div>
-          Already have an account? <a href={'/login'}>Login</a>
+          Already have an account? <Link to={'/login'}>Login</Link>
         </div>
       </form>
     </Container>

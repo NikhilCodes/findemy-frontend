@@ -52,7 +52,7 @@ export default function LoginPage() {
         <button className={'login-btn'} type={'submit'}>Log In</button>
         <br/>
         <div>
-          Don't have an account? <a href={'/signup'}>Sign up</a>
+          Don't have an account? <Link to={'/signup'}>Sign up</Link>
         </div>
       </form>
     </Container>
