@@ -5,7 +5,7 @@ import { IUser, IUserContext } from "../types/user.type";
 import { HttpService } from "../services/http.service";
 
 export const UserContext = createContext<IUserContext>({
-  isLoading: true,
+  isLoading: false,
   isAuthenticated: false,
   reFetchUser: () => Promise.resolve(),
   user: null,
@@ -23,13 +23,20 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const reFetchUser = async () => {
-    const { data } = await authService.getMe();
-    setIsAuthenticated(true);
-    setIsLoading(false);
-    setUser(data);
+    setIsLoading(true);
+    try {
+      const { data } = await authService.getMe();
+      setUser(data);
+      setIsAuthenticated(true);
+    } catch (e) {
+      setIsAuthenticated(false);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const logout = async () => {
+    setIsLoading(true);
     localStorage.clear();
     setIsAuthenticated(false);
     setIsLoading(false);
