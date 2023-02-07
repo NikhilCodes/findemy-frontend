@@ -15,6 +15,7 @@ import { Loader } from '../../components/Loader';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchCoursesAsync, selectCourses, selectCourseTotal } from '../../redux/slices/courses.slice';
 import { fetchCartAsync } from '../../redux/slices/cart.slice';
+import { Rating } from '../../components/Rating';
 
 export default function CoursesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -155,9 +156,12 @@ const CourseCard = ({ course }) => {
         <div className='card-title small text-secondary py-1' dangerouslySetInnerHTML={{
           __html: course.description,
         }}></div>
-        <div style={{ color: 'goldenrod' }} className={'fw-bold'}>
-          {course.rating.averageValue} <small
-          className={'text-secondary fw-light'}>({course.rating?.totalRatings?.toLocaleString()})</small>
+        <div style={{ color: 'goldenrod' }} className={'fw-bold d-flex align-items-center'}>
+          {course.rating?.averageRating?.toFixed(1) ?? '0'}
+          &nbsp;
+          <Rating rating={+(course.rating?.averageRating ?? 0)} total={5} />
+          &nbsp;
+          <small className={'text-secondary fw-light'}>({course.rating?.totalRatings?.toLocaleString()} ratings)</small>
         </div>
         <div className={'d-flex justify-content-between'}>
           <div>
